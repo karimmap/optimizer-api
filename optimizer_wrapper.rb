@@ -103,7 +103,7 @@ module OptimizerWrapper
       next if service[:vrp].preprocessing_partitions.empty? ||
               !service[:vrp].preprocessing_first_solution_strategy.to_a.include?('periodic')
 
-      service[:vrp].resolution_repetition ||= 3
+      service[:vrp].resolution_repetition ||= 1
     }
 
     if services_vrps.any?{ |sv| !sv[:service] }
@@ -390,22 +390,22 @@ module OptimizerWrapper
 
   def self.split_independent_vrp(vrp)
     # Don't split vrp if
-    return [vrp] if (vrp.vehicles.size <= 1) ||
-                    (vrp.services.empty? && vrp.shipments.empty?) # there might be zero services or shipments (check together)
+    # return [vrp] if (vrp.vehicles.size <= 1) ||
+    #                 (vrp.services.empty? && vrp.shipments.empty?) # there might be zero services or shipments (check together)
 
-    if vrp.services.all?{ |s| s.sticky_vehicles.size == 1 } && vrp.shipments.all?{ |s| s.sticky_vehicles.size == 1 }
-      return split_independent_vrp_by_sticky_vehicle(vrp)
-    end
+    # if vrp.services.all?{ |s| s.sticky_vehicles.size == 1 } && vrp.shipments.all?{ |s| s.sticky_vehicles.size == 1 }
+    #   return split_independent_vrp_by_sticky_vehicle(vrp)
+    # end
 
-    all_skills = vrp.vehicles.map{ |v| v.skills.flatten }.uniq
-    if !vrp.subtours&.any? && # Cannot split if there is multimodal subtours
-       vrp.services.all?{ |s|
-         !s.skills.empty? &&
-         s.sticky_vehicles.empty? &&
-         all_skills.one?{ |skills| (s.skills & skills).size == s.skills.size }
-       }
-      return split_independent_vrp_by_skills(vrp)
-    end
+    # all_skills = vrp.vehicles.map{ |v| v.skills.flatten }.uniq
+    # if !vrp.subtours&.any? && # Cannot split if there is multimodal subtours
+    #    vrp.services.all?{ |s|
+    #      !s.skills.empty? &&
+    #      s.sticky_vehicles.empty? &&
+    #      all_skills.one?{ |skills| (s.skills & skills).size == s.skills.size }
+    #    }
+    #   return split_independent_vrp_by_skills(vrp)
+    # end
 
     [vrp]
   end

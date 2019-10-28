@@ -113,13 +113,14 @@ module Interpreters
 
         [[], duplicated_service_vrps]
       else
-        several_service_vrps = several_solutions(service_vrps)
-        reduced_service_vrps = service_vrps - service_vrps.select{ |service_vrp| service_vrp[:vrp][:resolution_several_solutions] }.compact
-        batched_service_vrps = reduced_service_vrps.collect{ |service_vrp| batch_heuristic(service_vrp) if service_vrp[:vrp][:resolution_batch_heuristic] }.compact
-        untouched_service_vrps = service_vrps -
-                                 service_vrps.select{ |service_vrp| service_vrp[:vrp][:resolution_several_solutions] } -
-                                 service_vrps.select{ |service_vrp| service_vrp[:vrp][:resolution_batch_heuristic] }
-        [untouched_service_vrps, (several_service_vrps + batched_service_vrps) || []]
+        [service_vrps, []]
+        # several_service_vrps = several_solutions(service_vrps)
+        # reduced_service_vrps = service_vrps - service_vrps.select{ |service_vrp| service_vrp[:vrp][:resolution_several_solutions] }.compact
+        # batched_service_vrps = reduced_service_vrps.collect{ |service_vrp| batch_heuristic(service_vrp) if service_vrp[:vrp][:resolution_batch_heuristic] }.compact
+        # untouched_service_vrps = service_vrps -
+        #                          service_vrps.select{ |service_vrp| service_vrp[:vrp][:resolution_several_solutions] } -
+        #                          service_vrps.select{ |service_vrp| service_vrp[:vrp][:resolution_batch_heuristic] }
+        # [untouched_service_vrps, (several_service_vrps + batched_service_vrps) || []]
       end
     end
 

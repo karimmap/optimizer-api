@@ -68,8 +68,8 @@ module Wrappers
         :assert_no_same_point_day_if_no_heuristic,
         :assert_no_allow_partial_if_no_heuristic,
         :assert_solver_if_not_periodic,
-        :assert_first_solution_strategy_is_possible,
-        :assert_first_solution_strategy_is_valid,
+        # :assert_first_solution_strategy_is_possible,
+        # :assert_first_solution_strategy_is_valid,
         :assert_clustering_compatible_with_scheduling_heuristic,
         :assert_lat_lon_for_partition,
         :assert_work_day_partitions_only_schedule,
@@ -772,7 +772,23 @@ module Wrappers
 
       output = Tempfile.new('optimize-or-tools-output', tmpdir=@tmp_dir)
 
-      correspondant = { 'path_cheapest_arc' => 0, 'global_cheapest_arc' => 1, 'local_cheapest_insertion' => 2, 'savings' => 3, 'parallel_cheapest_insertion' => 4, 'first_unbound' => 5, 'christofides' => 6 }
+      correspondant = { 'path_cheapest_arc' => 0,
+                        'global_cheapest_arc' => 1,
+                        'local_cheapest_insertion' => 2,
+                        'savings' => 3,
+                        'parallel_cheapest_insertion' => 4,
+                        'christofides' => 6,
+                        'first_unbound_min_value' => 7,
+                        'local_cheapest_arc' => 8,
+                        'sequential_cheapest_insertion' => 9,
+                        'best_insertion' => 10,
+                        'all_unperformed' => 11,
+                        'sweep' => 12,
+                        'evaluator_strategy' => 13,
+                        'path_most_constrained_arc' => 14,
+                        'auto' => 15,
+                        'unset' => 16
+      }
 
       raise StandardError, "Inconsistent first solution strategy used internally: #{vrp.preprocessing_first_solution_strategy}" if vrp.preprocessing_first_solution_strategy && correspondant[vrp.preprocessing_first_solution_strategy.first].nil?
 
@@ -788,7 +804,7 @@ module Wrappers
               vrp.resolution_vehicle_limit && vrp.resolution_vehicle_limit < problem.vehicles.size ? "-vehicle_limit #{vrp.resolution_vehicle_limit}" : nil,
               vrp.resolution_solver_parameter ? "-solver_parameter #{vrp.resolution_solver_parameter}" : nil,
               vrp.preprocessing_first_solution_strategy ? "-solver_parameter #{correspondant[vrp.preprocessing_first_solution_strategy.first]}" : nil,
-              vrp.resolution_evaluate_only || vrp.resolution_batch_heuristic ? '-only_first_solution': nil,
+              '-only_first_solution',
               vrp.restitution_intermediate_solutions ? '-intermediate_solutions' : nil,
               "-instance_file '#{input.path}'",
               "-solution_file '#{output.path}'"

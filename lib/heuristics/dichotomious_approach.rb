@@ -26,15 +26,16 @@ require 'ai4r'
 module Interpreters
   class Dichotomious
     def self.dichotomious_candidate?(service_vrp)
-      service_vrp[:level]&.positive? ||
-        (
-          service_vrp[:vrp].vehicles.none?{ |vehicle| vehicle.cost_fixed && !vehicle.cost_fixed.zero? } && #TODO: remove cost_fixed condition after exclusion cost calculation is corrected.
-          service_vrp[:vrp].vehicles.size > service_vrp[:vrp].resolution_dicho_algorithm_vehicle_limit &&
-          service_vrp[:vrp].services.size - service_vrp[:vrp].routes.map{ |r| r[:mission_ids].size }.sum > service_vrp[:vrp].resolution_dicho_algorithm_service_limit &&
-          !service_vrp[:vrp].scheduling? &&
-          service_vrp[:vrp].shipments.empty? && #TODO: check dicho with a P&D instance to remove this condition
-          service_vrp[:vrp].points.all?{ |point| point&.location&.lat && point&.location&.lon } #TODO: Remove and use matrix/matrix_index in clustering
-        )
+      false
+      # service_vrp[:level]&.positive? ||
+      #   (
+      #     service_vrp[:vrp].vehicles.none?{ |vehicle| vehicle.cost_fixed && !vehicle.cost_fixed.zero? } && #TODO: remove cost_fixed condition after exclusion cost calculation is corrected.
+      #     service_vrp[:vrp].vehicles.size > service_vrp[:vrp].resolution_dicho_algorithm_vehicle_limit &&
+      #     service_vrp[:vrp].services.size - service_vrp[:vrp].routes.map{ |r| r[:mission_ids].size }.sum > service_vrp[:vrp].resolution_dicho_algorithm_service_limit &&
+      #     !service_vrp[:vrp].scheduling? &&
+      #     service_vrp[:vrp].shipments.empty? && #TODO: check dicho with a P&D instance to remove this condition
+      #     service_vrp[:vrp].points.all?{ |point| point&.location&.lat && point&.location&.lon } #TODO: Remove and use matrix/matrix_index in clustering
+      #   )
     end
 
     def self.feasible_vrp(result, service_vrp)
@@ -43,6 +44,7 @@ module Interpreters
 
     def self.dichotomious_heuristic(service_vrp, job = nil, &block)
       if dichotomious_candidate?(service_vrp)
+        puts "CALLING DICHOTOMIOUS"
         set_config(service_vrp)
         t1 = Time.now
         # Must be called to be sure matrices are complete in vrp and be able to switch vehicles between sub_vrp
