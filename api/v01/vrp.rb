@@ -555,6 +555,21 @@ module Api
             output_format = params[:format]&.to_sym || (solution && solution['csv'] ? :csv : env['api.format'])
             env['api.format'] = output_format # To override json default format
 
+            begin
+              puts "#{id} id : #{id}"
+              puts "#{id} job : #{job ? 'yes' : 'no'}"
+              if job
+                puts "#{id} job keys : #{job.keys}"
+                if job['options']
+                  puts "#{id} job['options'].keys : #{job['options'].keys}"
+                else
+                  puts "#{id} job has no options"
+                end
+              else
+                puts "#{id} has no job"
+              end
+            rescue
+            end
             error!({status: 'Not Found', detail: "Job with id='#{id}' not found"}, 404) unless job && job['options']['api_key'] == params[:api_key] || solution
 
             solution ||= {}
