@@ -65,7 +65,7 @@ module OptimizerWrapper
     },
     router: {
       api_key: ENV['ROUTER_API_KEY'] || 'demo',
-      url: ENV['ROUTER_URL'] || 'http://localhost:4899/0.1'
+      url: ENV['ROUTER_URL'] || 'https://router.beta.mapotempo.com/0.1'
     },
     dump: {
       vrp: ENV['OPTIM_DUMP_VRP'] ? ENV['OPTIM_DUMP_VRP'] == 'true' : true,
