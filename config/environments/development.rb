@@ -68,13 +68,13 @@ module OptimizerWrapper
       url: ENV['ROUTER_URL'] || 'http://localhost:4899/0.1'
     },
     dump: {
-      vrp: ENV['OPTIM_DUMP_VRP'] ? ENV['OPTIM_DUMP_VRP'] == 'true' : true,
-      solution: ENV['OPTIM_DUMP_SOLUTION'] ? ENV['OPTIM_DUMP_SOLUTION'] == 'true' : true
+      vrp: false,
+      solution: false
     },
     debug: {
-      output_clusters: ENV['OPTIM_DBG_OUTPUT_CLUSTERS'] == 'true',
-      output_schedule: ENV['OPTIM_DBG_OUTPUT_SCHEDULE'] == 'true',
-      batch_heuristic: ENV['OPTIM_DBG_BATCH_HEURISTIC'] == 'true'
+      output_clusters: false,
+      output_schedule: false,
+      batch_heuristic: false
     }
   }
 end
