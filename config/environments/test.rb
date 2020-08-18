@@ -27,7 +27,7 @@ require './lib/cache_manager'
 require './util/logger'
 
 module OptimizerWrapper
-  TMP_DIR = ActiveSupport::Cache::NullStore.new
+  TMP_DIR = File.join(File.join(Dir.tmpdir, 'optimizer-api'), 'tmp')
   @@tmp_vrp_dir = CacheManager.new(TMP_DIR)
 
   HEURISTICS = %w[path_cheapest_arc global_cheapest_arc local_cheapest_insertion savings parallel_cheapest_insertion first_unbound christofides].freeze
@@ -42,7 +42,7 @@ module OptimizerWrapper
 
   @@dump_vrp_dir = CacheManager.new(TMP_DIR)
 
-  OptimizerLogger.level = ENV['LOG_LEVEL']&.to_sym || :fatal
+  OptimizerLogger.level = ENV['LOG_LEVEL']&.to_sym || :debug
   OptimizerLogger.with_datetime = true
   # OptimizerLogger.caller_location = nil => nil is default
 

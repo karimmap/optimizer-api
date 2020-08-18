@@ -120,7 +120,7 @@ module Models
     def self.create(hash, delete = true)
       Models.delete_all if delete
 
-      vrp = super({})
+      vrp = super({})#services
       self.check_consistency(hash)
       self.generate_schedule_indices_from_date(hash) unless hash.empty? || hash[:configuration].nil?
       [:name, :matrices, :units, :points, :rests, :zones, :capacities, :quantities, :timewindows,
